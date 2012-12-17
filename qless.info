@@ -1,0 +1,4 @@
+name = QLess
+description = Provides a Qless contact iFrame block
+core = 7.x
+package = "University of Melbourne"

@@ -1,0 +1,56 @@
+<?php
+/**
+ * @file qless.module
+ * Routines to provide the QLESS block.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function qless_block_info() {
+  $blocks[0] = array(
+    'info' => t('QLess Widget'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function qless_block_configure($delta = '') {
+  $form = array();
+
+  if ($delta == 0) {
+    $form['qless_iframe'] = array(
+      '#type' => 'textarea',
+      '#title' => t('QLess iFrame'),
+      '#description' => t('Please paste the complete QLESS iframe code.'),
+      '#default_value' => variable_get('qless_iframe_' . $delta, ''),
+      '#required' => TRUE,
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function qless_block_save($delta = '', $edit = array()) {
+  variable_set('qless_iframe_' . $delta, $edit['qless_iframe']);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function qless_block_view($delta = '') {
+  $block = array();
+
+  $block['subject'] = t('QLess: @delta', array('@delta' => $delta));
+  $block['content'] = array(
+    '#markup' => variable_get('qless_iframe_' . $delta, ''),
+  );
+
+  return $block;
+}
